@@ -22,6 +22,6 @@ public class Session {
 		return sessionName;
 	}
 	
-	//Wat moet een session nog meer hebben?
-	//Ook de getAllRentalCompanies Implementeren analoog aan netbeans?
+	//Wat moet een session nog meer hebben?  => mss een destroy session? 
+	//Ook de getAllRentalCompanies Implementeren analoog aan netbeans? => wat bedoel je juist?
 }

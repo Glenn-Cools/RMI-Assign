@@ -25,7 +25,8 @@ public class ReservationSession extends Session {
 		Quote quote = company.createQuote(constraints, getSessionName());
 		quotes.put(quote, company);
 		return quote;
-	//check availableCarType moet nog geÃ¯mplementeerd worden. Eventueel in Superclass Session ? 
+	//check availableCarType moet nog geïmplementeerd worden. Ik zou het eerst hier maken dan als je merkt dat de ander dat ook nodig heeft dan 
+		// misschien naar de super zetten, want ik denk dat de andere geen companyList nodig heeft, daar krijg je gwn de naam van de company.
 		
 	
 	
