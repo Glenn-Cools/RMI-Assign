@@ -17,7 +17,7 @@ public class ReservationSession extends Session {
 			companyList.add(NamingService.getRental(companyName));
 		}
 		
-		CarRentalCompany company = checkAvailableType(constraints, companyList);
+		CarRentalCompany company = checkAvailableCarType(constraints, companyList);
 		if( company == null){
 			throw new ReservationException("No available cars of that type");
 		}
@@ -25,10 +25,9 @@ public class ReservationSession extends Session {
 		Quote quote = company.createQuote(constraints, getSessionName());
 		quotes.put(quote, company);
 		return quote;
-	//check availableCarType moet nog geïmplementeerd worden. Ik zou het eerst hier maken dan als je merkt dat de ander dat ook nodig heeft dan 
+	//check availableCarType moet nog geï¿½mplementeerd worden. Ik zou het eerst hier maken dan als je merkt dat de ander dat ook nodig heeft dan 
 		// misschien naar de super zetten, want ik denk dat de andere geen companyList nodig heeft, daar krijg je gwn de naam van de company.
 		
-	
 	
 	}
 	
