@@ -5,11 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,17 +15,15 @@ import java.util.logging.Logger;
 public class NamingService {
 	
 		
-	private static Map<String, CarRentalCompany> rentals;
-	private static Set<String> companies = new HashSet<String>(Arrays.asList("hertz","dockx"));
+	private static Map<String, CarRentalCompany> rentals = new HashMap<String,CarRentalCompany>();
 	
 	
-	
-	public static void registerCompany(String name){
-		companies.add(name);
+	public static synchronized void registerCompany(String filename){
+		loadRental(filename);
 	}
 	
-	public static void unregisterCompany(String name){
-		companies.remove(name);
+	public static synchronized void unregisterCompany(String name){
+		rentals.remove(name);
 	}
 	
 
@@ -39,15 +35,7 @@ public class NamingService {
         return out;
     }
     
-    public static synchronized Map<String, CarRentalCompany> getRentals(){
-        if(rentals == null){
-            rentals = new HashMap<String, CarRentalCompany>();
-            for(String company: companies){
-            	loadRental(company + ".csv");
-            }
-            //loadRental("hertz.csv");
-            //loadRental("dockx.csv");
-        }
+    public static Map<String, CarRentalCompany> getRentals(){
         return rentals;
     }
 

@@ -7,6 +7,10 @@ import java.util.HashMap;
 
 public class ReservationSession extends Session {
 	
+	public ReservationSession(String name) {
+		super(name);
+	}
+
 	private HashMap<Quote, CarRentalCompany> quotes = new HashMap<Quote, CarRentalCompany>();
 
 	public Quote createQuote(Date start, Date end, String carType, String region) throws ReservationException{
@@ -25,8 +29,7 @@ public class ReservationSession extends Session {
 		Quote quote = company.createQuote(constraints, getSessionName());
 		quotes.put(quote, company);
 		return quote;
-	//check availableCarType moet nog ge�mplementeerd worden. Ik zou het eerst hier maken dan als je merkt dat de ander dat ook nodig heeft dan 
-		// misschien naar de super zetten, want ik denk dat de andere geen companyList nodig heeft, daar krijg je gwn de naam van de company.
+	
 		
 	
 	}

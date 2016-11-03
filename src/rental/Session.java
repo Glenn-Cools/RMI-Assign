@@ -6,7 +6,8 @@ import java.util.ArrayList;
 
 public class Session {
 	
-	public Session(){
+	public Session(String name){
+		setSessionName(name);
 		
 	}
 	
@@ -35,11 +36,5 @@ public class Session {
 			}
 		}
 		return null;
-		// deze method toch in super he ? (zie comment in ReservationSession l29), Protected zodat subclassen er gebruik van kan maken
-		// mss rest ook protected maken ? 
 	}
-	
-	
-	//Wat moet een session nog meer hebben?  => mss een destroy session? => Lost automatisch GC dit niet op ?
-	
 }
