@@ -10,9 +10,9 @@ import java.util.StringTokenizer;
 
 public class RentalServer {
 	
-	public static CarRentalCompany construct() throws ReservationException,
+	public static CarRentalCompany construct(String filename) throws ReservationException,
 			NumberFormatException, IOException {
-		CrcData data  = loadData("hertz.csv");
+		CrcData data  = loadData(filename);
 		return new CarRentalCompany(data.name, data.regions, data.cars);
 	}
 

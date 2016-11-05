@@ -44,19 +44,25 @@ public class CarRentalCompany implements ICarRentalCompany{
 		
 		System.setSecurityManager(null);
 		
+		registerCompany("hertz", "hertz.csv");
+		registerCompany("dockx", "dockx.csv");
+	}
+	
+	private static void registerCompany(String registryName, String filename){
 		try{
-			CarRentalCompany obj = RentalServer.construct();
+			CarRentalCompany obj = RentalServer.construct(filename);
 			ICarRentalCompany stub = (ICarRentalCompany) UnicastRemoteObject.exportObject(obj, 0);
 			
 			// bind to remote object's stub in the registry.
 			Registry registry = LocateRegistry.getRegistry();
-			registry.bind("ICarRentalCompany", stub);
+			registry.bind(registryName, stub);
 			
 			System.err.println("Server rdy");
 		} catch ( Exception e) {
 			System.err.println("Server exp: " + e.toString());
 			e.printStackTrace();
 		}
+		
 	}
 
 	/********
