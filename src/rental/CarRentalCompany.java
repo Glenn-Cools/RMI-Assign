@@ -1,7 +1,9 @@
 package rental;
 
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,10 +13,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.rmi.registry.Registry;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 
 
 public class CarRentalCompany implements ICarRentalCompany{
@@ -124,6 +122,23 @@ public class CarRentalCompany implements ICarRentalCompany{
 			}
 		}
 		return availableCarTypes;
+	}
+	
+	public String getCheapestCarType(Date start, Date end){
+		
+		String cheapestCartype = null;
+		double cheapestPrice = Double.POSITIVE_INFINITY;
+		Set<CarType> availableCarTypes = getAvailableCarTypes(start, end);
+		
+		for(CarType type: availableCarTypes){
+			double price = type.getRentalPricePerDay();
+			if(price < cheapestPrice){
+				cheapestCartype = type.getName();
+				cheapestPrice = price;
+			}
+		}
+		
+		return cheapestCartype;
 	}
 	
 	/*********

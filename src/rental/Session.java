@@ -2,6 +2,7 @@ package rental;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class Session {
@@ -24,8 +25,9 @@ public class Session {
 		return sessionName;
 	}
 	
-	protected CarRentalCompany checkAvailableCarType(ReservationConstraints constraints, ArrayList<CarRentalCompany> companies){
-		for (CarRentalCompany company: companies){
+	protected ICarRentalCompany checkAvailableCarType(ReservationConstraints constraints, ArrayList<ICarRentalCompany> companies) throws RemoteException{
+		
+		for (ICarRentalCompany company: companies){
 			Set<CarType> availableCars = company.getAvailableCarTypes(constraints.getStartDate(), constraints.getEndDate());
 			try{
 				if(availableCars.contains(company.getCarType(constraints.getCarType()))){
