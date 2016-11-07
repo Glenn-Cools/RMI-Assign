@@ -7,6 +7,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NamingService {
+	
+	public static void main(String args[]) {
+		
+		System.setSecurityManager(null);
+		
+		try {
+			// preload hertz and dockx since they are already up and running
+			registerCompany("hertz");
+			registerCompany("dockx");
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 	private static Map<String, ICarRentalCompany> rentals = new HashMap<String, ICarRentalCompany>();
 

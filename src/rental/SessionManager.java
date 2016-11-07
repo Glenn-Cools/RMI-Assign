@@ -1,36 +1,55 @@
 package rental;
 
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SessionManager {
+public class SessionManager implements ISessionManager{
 	
-	private static Map<String,Session> sessions = new HashMap<String,Session>();
+	public static void main(){
+		try{
+			SessionManager obj = new SessionManager();
+			ISessionManager stub = (ISessionManager) UnicastRemoteObject.exportObject(obj, 0);
+			
+			// bind to remote object's stub in the registry.
+			Registry registry = LocateRegistry.getRegistry();
+			registry.bind("ISessionManager", stub);
+			
+			System.err.println("Server rdy");
+		} catch ( Exception e) {
+			System.err.println("Server exp: " + e.toString());
+			e.printStackTrace();
+		}
+	}
 	
-	public static Session getSession(String name){
+	private Map<String,Session> sessions = new HashMap<String,Session>();
+	
+	public Session getSession(String name){
 		
-		Session out = SessionManager.getSessions().get(name);
+		Session out = getSessions().get(name);
         if (out == null) {
             throw new IllegalArgumentException("Session doesn't exist!: " + name);
         }
         return out;
 	}
 	
-	private static Map<String,Session> getSessions(){
+	private Map<String,Session> getSessions(){
 		return sessions;
 	}
 	
-	public static synchronized ReservationSession createReservationSession(String name){
+	public synchronized ReservationSession createReservationSession(String name){
 		sessions.put(name, new ReservationSession(name));
-		return (ReservationSession) SessionManager.getSession(name);
+		return (ReservationSession) getSession(name);
 	}
 	
-	public static synchronized ManagerSession createManagerSession(String name){
-		sessions.put(name, new ManagerSession(name));
-		return (ManagerSession) SessionManager.getSession(name);
+	public synchronized ManagerSession createManagerSession(String name,String companyName){
+		sessions.put(name, new ManagerSession(name,companyName));
+		return (ManagerSession) getSession(name);
 	}
 	
-	public static void endSession(String name){
+	public void endSession(String name){
 		sessions.remove(name);
 	}
 
