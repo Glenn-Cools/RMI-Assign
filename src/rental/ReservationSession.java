@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 
 
 public class ReservationSession extends Session {
@@ -42,7 +44,6 @@ public class ReservationSession extends Session {
 	}
 	
 	public ArrayList<Reservation> confirmQuote() throws ReservationException{
-		
 		ArrayList<Reservation> reservations = new ArrayList<Reservation>();
 		try{
 			for(Map.Entry<Quote, CarRentalCompany> entry : quotes.entrySet()){
@@ -60,6 +61,27 @@ public class ReservationSession extends Session {
 	} 
 	
 	
+	public String getCheapestCarType(ReservationSession session, Date start, Date end, String region, CarRentalCompany company){
+		String cheapestCar = new String("");
+		
+		Set<CarType> availableCars = new HashSet<CarType>();
+		availableCars = company.getAvailableCarTypes(start, end);
+		
+		
+		
+		
+		for(CarType C: availableCars){
+			
+			C.getRentalPricePerDay()
+			
+		}
+			
+			
+		}
+		
+		
+		return cheapestCar;
+	}
 	
 	
 	
