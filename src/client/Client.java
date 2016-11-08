@@ -3,10 +3,9 @@ package client;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Set;
 
 import rental.CarType;
 import rental.ISessionManager;
@@ -25,9 +24,10 @@ public class Client extends AbstractTestManagement<ReservationSession,ManagerSes
 	}
 	
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public static void main(String[] args) throws Exception {
+		
+		Client client = new Client("trips");
+		client.run();
 	}
 	
 	public static ISessionManager getSessionManager(){
