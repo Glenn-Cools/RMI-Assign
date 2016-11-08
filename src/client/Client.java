@@ -15,6 +15,7 @@ import rental.Reservation;
 import rental.ReservationException;
 import rental.ReservationSession;
 import rental.Session;
+import rental.SessionManager;
 
 public class Client extends AbstractTestManagement<ReservationSession,ManagerSession> {
 
@@ -27,6 +28,7 @@ public class Client extends AbstractTestManagement<ReservationSession,ManagerSes
 	public static void main(String[] args) throws Exception {
 		
 		Client client = new Client("trips");
+		while(!SessionManager.isReady);
 		client.run();
 	}
 	

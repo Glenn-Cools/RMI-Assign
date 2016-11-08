@@ -38,12 +38,12 @@ public class CarRentalCompany implements ICarRentalCompany{
 		logger.log(Level.INFO, this.toString());
 	}
 	
-	public static void main(String args[]) {
+	public static void main() {
 		
 		System.setSecurityManager(null);
 		
-		registerCompany("hertz", "hertz.csv");
-		registerCompany("dockx", "dockx.csv");
+		registerCompany("Hertz", "hertz.csv");
+		registerCompany("Dockx", "dockx.csv");
 	}
 	
 	private static void registerCompany(String registryName, String filename){

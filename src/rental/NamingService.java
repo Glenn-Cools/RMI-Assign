@@ -5,26 +5,37 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class NamingService {
+	private static Logger logger = Logger.getLogger(NamingService.class.getName());
+	public static NamingService namingService;
 	
 	public static void main(String args[]) {
+		
 		
 		System.setSecurityManager(null);
 		
 		try {
+			CarRentalCompany.main();
+
 			// preload hertz and dockx since they are already up and running
-			registerCompany("hertz");
-			registerCompany("dockx");
+			NamingService.namingService = new NamingService();
+			namingService.registerCompany("Hertz");
+			namingService.registerCompany("Dockx");
+			
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
+		SessionManager.isReady = true;
+		SessionManager.main();
 		
 	}
 
-	private static Map<String, ICarRentalCompany> rentals = new HashMap<String, ICarRentalCompany>();
+	private Map<String, ICarRentalCompany> rentals = new HashMap<String, ICarRentalCompany>();
 
-	public static synchronized void registerCompany(String registryName) throws RemoteException {
+	public  void registerCompany(String registryName) throws RemoteException {
 
 		ICarRentalCompany stub;
 		try {
@@ -41,11 +52,11 @@ public class NamingService {
 
 	}
 
-	public static synchronized void unregisterCompany(String registryName) {
+	public void unregisterCompany(String registryName) {
 		rentals.remove(registryName);
 	}
 
-	public static ICarRentalCompany getRental(String companyName) {
+	public ICarRentalCompany getRental(String companyName) throws RemoteException {
 
 		ICarRentalCompany out = null;
 
@@ -61,7 +72,15 @@ public class NamingService {
 		return out;
 	}
 
-	public static Map<String, ICarRentalCompany> getRentals() {
+	public synchronized Map<String, ICarRentalCompany> getRentals() throws RemoteException  {
+		if(rentals == null){
+			
+			rentals = new HashMap<String, ICarRentalCompany>();
+			namingService.registerCompany("Hertz");
+			namingService.registerCompany("Dockx");
+			
+		}
+		logger.log(Level.INFO,"Rentals "+ rentals.get("Hertz").getName()) ;
 		return rentals;
 	}
 

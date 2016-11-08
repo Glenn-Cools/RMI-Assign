@@ -8,9 +8,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ReservationSession extends Session {
 
+	private static Logger logger = Logger.getLogger(ReservationSession.class.getName());
+	
 	public ReservationSession(String name) {
 		super(name);
 	}
@@ -19,13 +23,16 @@ public class ReservationSession extends Session {
 
 	public Quote createQuote(Date start, Date end, String carType, String region)
 			throws ReservationException, RemoteException {
+		logger.log(Level.INFO, "test");
 		ReservationConstraints constraints = new ReservationConstraints(start, end, carType, region);
-
-		ArrayList<ICarRentalCompany> companyList = new ArrayList<ICarRentalCompany>();
-		for (String companyName : getAllRentalCompanies()) {
-			companyList.add(NamingService.getRental(companyName));
-		}
-
+		logger.log(Level.INFO, "test2");
+		ArrayList<ICarRentalCompany> companyList = new ArrayList<ICarRentalCompany>(NamingService.namingService.getRentals().values());
+	
+		//for (String companyName : getAllRentalCompanies()) {
+			//logger.log(Level.INFO, companyName);
+			//companyList.add(NamingService.getRental(companyName));
+		//}
+		logger.log(Level.INFO, "test4");
 		ICarRentalCompany company = checkAvailableCarType(constraints, companyList);
 		if (company == null) {
 			throw new ReservationException("No available cars of that type");
@@ -52,7 +59,7 @@ public class ReservationSession extends Session {
 			}
 		} catch (ReservationException e) {
 			for (Reservation res : reservations) {
-				NamingService.getRental(res.getRentalCompany()).cancelReservation(res);
+				NamingService.namingService.getRental(res.getRentalCompany()).cancelReservation(res);
 			}
 			reservations.clear();
 			throw new ReservationException(e.getMessage());
@@ -65,7 +72,7 @@ public class ReservationSession extends Session {
 		String cheapestCarType = null;
 		double cheapestPrice = Double.POSITIVE_INFINITY;
 
-		Map<String, ICarRentalCompany> companies = NamingService.getRentals();
+		Map<String, ICarRentalCompany> companies = NamingService.namingService.getRentals();
 		for (ICarRentalCompany company : companies.values()) {
 			if (company.hasRegion(region)) {
 				String carType = company.getCheapestCarType(start, end);
@@ -82,7 +89,7 @@ public class ReservationSession extends Session {
 
 	public Set<CarType> getAllAvailableCarTypes(Date start, Date end) throws RemoteException{
 		Set<CarType> availableCars = new HashSet<CarType>();
-		Collection<ICarRentalCompany> companies = NamingService.getRentals().values();
+		Collection<ICarRentalCompany> companies = NamingService.namingService.getRentals().values();
 		for(ICarRentalCompany C: companies){
 			availableCars.addAll(C.getAvailableCarTypes(start, end));
 		}

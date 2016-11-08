@@ -24,6 +24,8 @@ public class SessionManager implements ISessionManager{
 		}
 	}
 	
+	public static boolean isReady = false;
+	
 	private Map<String,Session> sessions = new HashMap<String,Session>();
 	
 	public Session getSession(String name){

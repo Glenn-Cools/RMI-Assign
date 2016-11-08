@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Session implements Serializable{
 	
@@ -13,8 +14,8 @@ public class Session implements Serializable{
 		
 	}
 	
-	public Set<String>getAllRentalCompanies(){
-		return new HashSet<String>(NamingService.getRentals().keySet());
+	public Set<String>getAllRentalCompanies() throws RemoteException{
+		return new HashSet<String>(NamingService.namingService.getRentals().keySet());
 	}
 	private String sessionName;
 	
