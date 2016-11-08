@@ -2,9 +2,12 @@ package rental;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class ReservationSession extends Session {
 
@@ -77,4 +80,12 @@ public class ReservationSession extends Session {
 		return cheapestCarType;
 	}
 
+	public Set<CarType> getAllAvailableCarTypes(Date start, Date end) throws RemoteException{
+		Set<CarType> availableCars = new HashSet<CarType>();
+		Collection<ICarRentalCompany> companies = NamingService.getRentals().values();
+		for(ICarRentalCompany C: companies){
+			availableCars.addAll(C.getAvailableCarTypes(start, end));
+		}
+		return availableCars;
+	}
 }

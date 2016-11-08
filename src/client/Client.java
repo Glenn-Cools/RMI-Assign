@@ -6,11 +6,14 @@ import java.rmi.registry.Registry;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.ArrayList;
 
 import rental.CarType;
 import rental.ISessionManager;
 import rental.ManagerSession;
+import rental.Quote;
 import rental.Reservation;
+import rental.ReservationException;
 import rental.ReservationSession;
 import rental.Session;
 
@@ -42,7 +45,6 @@ public class Client extends AbstractTestManagement<ReservationSession,ManagerSes
 		return stub;
 	}
 
-	
 	@Override
 	protected ReservationSession getNewReservationSession(String name) throws RemoteException {
 		return getSessionManager().createReservationSession(name);
@@ -52,22 +54,19 @@ public class Client extends AbstractTestManagement<ReservationSession,ManagerSes
 	protected ManagerSession getNewManagerSession(String name, String carRentalName) throws RemoteException {
 		return getSessionManager().createManagerSession(name, carRentalName);
 	}
-	
-	
+		
 	@Override
 	protected Set<String> getBestClients(ManagerSession ms) throws RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
 	@Override
 	protected String getCheapestCarType(ReservationSession session, Date start, Date end, String region)
 			throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		String cheapestCarType = session.getCheapestCarType(start, end, region);
+		return cheapestCarType;
 	}
-
 
 	@Override
 	protected CarType getMostPopularCarTypeIn(ManagerSession ms, String carRentalCompanyName, int year)
@@ -76,30 +75,26 @@ public class Client extends AbstractTestManagement<ReservationSession,ManagerSes
 		return null;
 	}
 
-
 	@Override
 	protected void checkForAvailableCarTypes(ReservationSession session, Date start, Date end) throws RemoteException {
-		// TODO Auto-generated method stub
+		session.getAllAvailableCarTypes(start, end);
 		
 	}
-
 
 	@Override
 	protected void addQuoteToSession(ReservationSession session, String name, Date start, Date end, String carType,
-			String region) throws RemoteException {
-		// TODO Auto-generated method stub
+			String region) throws RemoteException, ReservationException {
+		session.createQuote(start, end, carType, region);
 		
 	}
-
 
 	@Override
-	protected List<Reservation> confirmQuotes(ReservationSession session, String name) throws RemoteException {
-		// TODO Auto-generated method stub
-		
+	protected ArrayList<Reservation> confirmQuotes(ReservationSession session, String name) throws RemoteException, ReservationException {
+		ArrayList<Reservation> res = session.confirmQuote();
+		endSession(session);
 		//End Session?
-		return null;
+		return res;
 	}
-
 
 	@Override
 	protected int getNumberOfReservationsForCarType(ManagerSession ms, String carRentalName, String carType)
@@ -111,6 +106,11 @@ public class Client extends AbstractTestManagement<ReservationSession,ManagerSes
 	protected void endSession(Session session) throws RemoteException{
 		getSessionManager().endSession(session.getSessionName());
 		
+	}
+	
+	protected ArrayList<Quote> getCurrentQuotes(ReservationSession session) throws RemoteException{
+		ArrayList<Quote> quotes = session.getCurrentQuotes();
+		return quotes;
 	}
 
 	

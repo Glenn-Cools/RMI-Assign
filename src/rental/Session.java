@@ -2,10 +2,11 @@ package rental;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class Session {
+public class Session implements Serializable{
 	
 	public Session(String name){
 		setSessionName(name);
