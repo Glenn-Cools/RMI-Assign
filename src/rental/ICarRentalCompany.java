@@ -5,6 +5,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface ICarRentalCompany extends Remote {
@@ -38,6 +39,9 @@ public interface ICarRentalCompany extends Remote {
 	public void cancelReservation(Reservation res) throws RemoteException;
 	public List<Reservation> getReservationsByRenter(String clientName) throws RemoteException;
 	public List<Reservation> getReservationsByCarType(String carType) throws RemoteException;
+	public CarType getMostPopularCarTypeIn(int year) throws RemoteException;
+	public List<Reservation> getReservationsByCarTypeIn(String carType, int year) throws RemoteException;
+	public Map<String, Integer> getNBOfResForAllClients() throws RemoteException;
 	
 
 }

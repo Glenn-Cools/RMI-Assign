@@ -28,7 +28,7 @@ public class Client extends AbstractTestManagement<ReservationSession,ManagerSes
 	public static void main(String[] args) throws Exception {
 		
 		Client client = new Client("trips");
-		while(!SessionManager.isReady);
+		//while(!SessionManager.isReady);
 		client.run();
 	}
 	
@@ -59,8 +59,7 @@ public class Client extends AbstractTestManagement<ReservationSession,ManagerSes
 		
 	@Override
 	protected Set<String> getBestClients(ManagerSession ms) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		return ms.getBestClients();
 	}
 
 	@Override
@@ -73,8 +72,7 @@ public class Client extends AbstractTestManagement<ReservationSession,ManagerSes
 	@Override
 	protected CarType getMostPopularCarTypeIn(ManagerSession ms, String carRentalCompanyName, int year)
 			throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+		return ms.getMostPopularCarTypeIn(year);
 	}
 
 	@Override
@@ -94,15 +92,13 @@ public class Client extends AbstractTestManagement<ReservationSession,ManagerSes
 	protected ArrayList<Reservation> confirmQuotes(ReservationSession session, String name) throws RemoteException, ReservationException {
 		ArrayList<Reservation> res = session.confirmQuote();
 		endSession(session);
-		//End Session?
 		return res;
 	}
 
 	@Override
 	protected int getNumberOfReservationsForCarType(ManagerSession ms, String carRentalName, String carType)
 			throws RemoteException {
-		// TODO Auto-generated method stub
-		return 0;
+		return ms.getNumberOfReservationsForCarType(carType);
 	}
 	
 	protected void endSession(Session session) throws RemoteException{
