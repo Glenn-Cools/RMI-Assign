@@ -15,7 +15,7 @@ public class Session implements Serializable{
 	}
 	
 	public Set<String>getAllRentalCompanies() throws RemoteException{
-		return new HashSet<String>(NamingService.namingService.getRentals().keySet());
+		return new HashSet<String>(NamingService.getRentals().keySet());
 	}
 	private String sessionName;
 	

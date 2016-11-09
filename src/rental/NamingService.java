@@ -10,37 +10,15 @@ import java.util.logging.Logger;
 
 public class NamingService {
 	private static Logger logger = Logger.getLogger(NamingService.class.getName());
-	public static NamingService namingService;
 	
-	public static void main(String args[]) {
-		
-		
-		System.setSecurityManager(null);
-		
-		try {
-			CarRentalCompany.main();
+	private static Map<String, ICarRentalCompany> rentals = new HashMap<String, ICarRentalCompany>();
 
-			// preload hertz and dockx since they are already up and running
-			NamingService.namingService = new NamingService();
-			namingService.registerCompany("Hertz");
-			namingService.registerCompany("Dockx");
-			
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-		SessionManager.isReady = true;
-		SessionManager.main();
-		
-	}
-
-	private Map<String, ICarRentalCompany> rentals = new HashMap<String, ICarRentalCompany>();
-
-	public  void registerCompany(String registryName) throws RemoteException {
+	public static void registerCompany(String companyName) throws RemoteException {
 
 		ICarRentalCompany stub;
 		try {
 			Registry registry = LocateRegistry.getRegistry();
-			stub = (ICarRentalCompany) registry.lookup(registryName);
+			stub = (ICarRentalCompany) registry.lookup(companyName);
 
 		} catch (Exception e) {
 			System.err.println("Client exp: " + e.toString());
@@ -48,15 +26,15 @@ public class NamingService {
 			stub = null;
 		}
 
-		rentals.put(registryName, stub);
+		rentals.put(companyName, stub);
 
 	}
 
-	public void unregisterCompany(String registryName) {
+	public static void unregisterCompany(String registryName) {
 		rentals.remove(registryName);
 	}
 
-	public ICarRentalCompany getRental(String companyName) throws RemoteException {
+	public static ICarRentalCompany getRental(String companyName) throws RemoteException {
 
 		ICarRentalCompany out = null;
 
@@ -72,14 +50,14 @@ public class NamingService {
 		return out;
 	}
 
-	public synchronized Map<String, ICarRentalCompany> getRentals() throws RemoteException  {
-		if(rentals == null){
+	public static synchronized Map<String, ICarRentalCompany> getRentals() throws RemoteException  {
+		/*if(rentals == null){
 			
 			rentals = new HashMap<String, ICarRentalCompany>();
-			namingService.registerCompany("Hertz");
-			namingService.registerCompany("Dockx");
+			registerCompany("Hertz");
+			registerCompany("Dockx");
 			
-		}
+		}*/
 		logger.log(Level.INFO,"Rentals "+ rentals.get("Hertz").getName()) ;
 		return rentals;
 	}

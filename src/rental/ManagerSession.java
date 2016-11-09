@@ -31,7 +31,7 @@ public class ManagerSession extends Session {
 
 		int out = 0;
 
-		for (ICarRentalCompany company : NamingService.namingService.getRentals().values()) {
+		for (ICarRentalCompany company : NamingService.getRentals().values()) {
 			if (company.getAllCarTypes().contains(company.getCarType(carType))) {
 				out += company.getReservationsByCarType(carType).size();
 			}
@@ -39,9 +39,13 @@ public class ManagerSession extends Session {
 
 		return out;
 	}
+	
+	public void registerCompany() throws RemoteException{
+		NamingService.registerCompany(getCompanyName());
+	}
 
 	public CarType getMostPopularCarTypeIn(int year) throws RemoteException {
-		ICarRentalCompany company = NamingService.namingService.getRental(getCompanyName());
+		ICarRentalCompany company = NamingService.getRental(getCompanyName());
 
 		return company.getMostPopularCarTypeIn(year);
 	}
@@ -51,7 +55,7 @@ public class ManagerSession extends Session {
 		Set<String> bestRenters = new HashSet<String>();
 
 		Map<String, Integer> NBResForAllClients = new HashMap<String, Integer>();
-		for (ICarRentalCompany company : NamingService.namingService.getRentals().values()) {
+		for (ICarRentalCompany company : NamingService.getRentals().values()) {
 
 			Map<String, Integer> NBResPerClient = company.getNBOfResForAllClients();
 			for (Map.Entry<String, Integer> entry : NBResPerClient.entrySet()) {

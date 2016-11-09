@@ -4,6 +4,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,18 +43,18 @@ public class CarRentalCompany implements ICarRentalCompany{
 		
 		System.setSecurityManager(null);
 		
-		registerCompany("Hertz", "hertz.csv");
-		registerCompany("Dockx", "dockx.csv");
+		registerCompany("hertz.csv");
+		registerCompany("dockx.csv");
 	}
 	
-	private static void registerCompany(String registryName, String filename){
+	private static void registerCompany(String filename){
 		try{
 			CarRentalCompany obj = RentalServer.construct(filename);
 			ICarRentalCompany stub = (ICarRentalCompany) UnicastRemoteObject.exportObject(obj, 0);
 			
 			// bind to remote object's stub in the registry.
 			Registry registry = LocateRegistry.getRegistry();
-			registry.bind(registryName, stub);
+			registry.bind(obj.getName(), stub);
 			
 			System.err.println("Server rdy");
 		} catch ( Exception e) {
@@ -238,6 +239,78 @@ public class CarRentalCompany implements ICarRentalCompany{
 		
 		return carTypeRes;
 		
+	}
+	
+	public List<Reservation> getReservationsByCarTypeIn(String carType, int year) {
+
+		List<Reservation> carTypeRes = new ArrayList<Reservation>();
+
+		for (Car car : cars) {
+
+			List<Reservation> res = car.getReservations();
+			for (Reservation r : res) {
+
+				if (r.getCarType().equals(carType) && testInYear(year, r.getStartDate())) {
+					carTypeRes.add(r);
+				}
+			}
+		}
+
+		return carTypeRes;
+
+	}
+
+	private boolean testInYear(int year, Date date) {
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		return calendar.get(Calendar.YEAR) == year;
+
+	}
+
+	public CarType getMostPopularCarTypeIn(int year) {
+
+		CarType carType = null;
+		double mostPopular = 0;
+
+		for (CarType type : getAllCarTypes()) {
+			double number = getReservationsByCarTypeIn(type.getName(), year).size();
+			if (number > mostPopular) {
+				mostPopular = number;
+				carType = type;
+			}
+
+		}
+
+		return carType;
+	}
+
+	public Map<String, Integer> getNBOfResForAllClients() {
+
+		Map<String, Integer> out = new HashMap<String, Integer>();
+
+		for (String renter : getAllRenters()) {
+			int NBRes = getReservationsByRenter(renter).size();
+			out.put(renter, NBRes);
+		}
+
+		return out;
+	}
+
+	private Set<String> getAllRenters() {
+
+		Set<String> renters = new HashSet<String>();
+
+		for (Car car : cars) {
+
+			List<Reservation> res = car.getReservations();
+			for (Reservation r : res) {
+
+				renters.add(r.getCarRenter());
+			}
+		}
+
+		return renters;
 	}
 
 	public void cancelReservation(Reservation res) {

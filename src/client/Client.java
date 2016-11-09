@@ -28,12 +28,22 @@ public class Client extends AbstractTestManagement<ReservationSession,ManagerSes
 	public static void main(String[] args) throws Exception {
 		
 		Client client = new Client("trips");
-		//while(!SessionManager.isReady);
+		// Get Hertz and Dockx preloaded
+		
+		ManagerSession ms  = client.getNewManagerSession("admin", "Hertz");
+		client.registerCompany(ms);
+		client.endSession(ms);
+		ms = client.getNewManagerSession("admin", "Dockx");
+		client.registerCompany(ms);
+		client.endSession(ms);
+		
+		// Run testfile
 		client.run();
 	}
 	
 	public static ISessionManager getSessionManager(){
 		
+		System.setSecurityManager(null);
 		ISessionManager stub;
 		try {
 			Registry registry = LocateRegistry.getRegistry();
@@ -55,6 +65,10 @@ public class Client extends AbstractTestManagement<ReservationSession,ManagerSes
 	@Override
 	protected ManagerSession getNewManagerSession(String name, String carRentalName) throws RemoteException {
 		return getSessionManager().createManagerSession(name, carRentalName);
+	}
+	
+	protected void registerCompany(ManagerSession ms) throws RemoteException{
+		ms.registerCompany();
 	}
 		
 	@Override

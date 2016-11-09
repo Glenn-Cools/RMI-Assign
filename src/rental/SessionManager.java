@@ -9,6 +9,10 @@ import java.util.Map;
 public class SessionManager implements ISessionManager{
 	
 	public static void main(){
+		
+		System.setSecurityManager(null);
+		CarRentalCompany.main();
+		
 		try{
 			SessionManager obj = new SessionManager();
 			ISessionManager stub = (ISessionManager) UnicastRemoteObject.exportObject(obj, 0);
@@ -22,6 +26,8 @@ public class SessionManager implements ISessionManager{
 			System.err.println("Server exp: " + e.toString());
 			e.printStackTrace();
 		}
+		
+		
 	}
 	
 	public static boolean isReady = false;

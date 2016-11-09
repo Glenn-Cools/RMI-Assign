@@ -26,7 +26,7 @@ public class ReservationSession extends Session {
 		logger.log(Level.INFO, "test");
 		ReservationConstraints constraints = new ReservationConstraints(start, end, carType, region);
 		logger.log(Level.INFO, "test2");
-		ArrayList<ICarRentalCompany> companyList = new ArrayList<ICarRentalCompany>(NamingService.namingService.getRentals().values());
+		ArrayList<ICarRentalCompany> companyList = new ArrayList<ICarRentalCompany>(NamingService.getRentals().values());
 	
 		//for (String companyName : getAllRentalCompanies()) {
 			//logger.log(Level.INFO, companyName);
@@ -59,7 +59,7 @@ public class ReservationSession extends Session {
 			}
 		} catch (ReservationException e) {
 			for (Reservation res : reservations) {
-				NamingService.namingService.getRental(res.getRentalCompany()).cancelReservation(res);
+				NamingService.getRental(res.getRentalCompany()).cancelReservation(res);
 			}
 			reservations.clear();
 			throw new ReservationException(e.getMessage());
@@ -72,7 +72,7 @@ public class ReservationSession extends Session {
 		String cheapestCarType = null;
 		double cheapestPrice = Double.POSITIVE_INFINITY;
 
-		Map<String, ICarRentalCompany> companies = NamingService.namingService.getRentals();
+		Map<String, ICarRentalCompany> companies = NamingService.getRentals();
 		for (ICarRentalCompany company : companies.values()) {
 			if (company.hasRegion(region)) {
 				String carType = company.getCheapestCarType(start, end);
@@ -89,7 +89,7 @@ public class ReservationSession extends Session {
 
 	public Set<CarType> getAllAvailableCarTypes(Date start, Date end) throws RemoteException{
 		Set<CarType> availableCars = new HashSet<CarType>();
-		Collection<ICarRentalCompany> companies = NamingService.namingService.getRentals().values();
+		Collection<ICarRentalCompany> companies = NamingService.getRentals().values();
 		for(ICarRentalCompany C: companies){
 			availableCars.addAll(C.getAvailableCarTypes(start, end));
 		}
