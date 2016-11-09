@@ -14,12 +14,12 @@ public class Session implements Serializable{
 		
 	}
 	
-	public Set<String>getAllRentalCompanies() throws RemoteException{
+	public Set<String> getAllRentalCompanies() throws RemoteException{
 		return new HashSet<String>(NamingService.getRentals().keySet());
 	}
 	private String sessionName;
 	
-	public void setSessionName(String name){
+	private void setSessionName(String name){
 		sessionName = name;
 	}
 	

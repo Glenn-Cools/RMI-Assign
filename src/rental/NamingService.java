@@ -29,8 +29,8 @@ public class NamingService {
 
 	}
 
-	public static void unregisterCompany(String registryName) {
-		rentals.remove(registryName);
+	public static void unregisterCompany(String companyName) {
+		rentals.remove(companyName);
 	}
 
 	public static ICarRentalCompany getRental(String companyName)  {
