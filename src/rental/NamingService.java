@@ -9,8 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class NamingService {
-	private static Logger logger = Logger.getLogger(NamingService.class.getName());
-	
+		
 	private static Map<String, ICarRentalCompany> rentals = new HashMap<String, ICarRentalCompany>();
 
 	public static void registerCompany(String companyName) throws RemoteException {
@@ -34,7 +33,7 @@ public class NamingService {
 		rentals.remove(registryName);
 	}
 
-	public static ICarRentalCompany getRental(String companyName) throws RemoteException {
+	public static ICarRentalCompany getRental(String companyName)  {
 
 		ICarRentalCompany out = null;
 
@@ -50,16 +49,9 @@ public class NamingService {
 		return out;
 	}
 
-	public static synchronized Map<String, ICarRentalCompany> getRentals() throws RemoteException  {
-		/*if(rentals == null){
-			
-			rentals = new HashMap<String, ICarRentalCompany>();
-			registerCompany("Hertz");
-			registerCompany("Dockx");
-			
-		}*/
-		logger.log(Level.INFO,"Rentals "+ rentals.get("Hertz").getName()) ;
-		return rentals;
+	public static synchronized Map<String, ICarRentalCompany> getRentals()  {
+
+		return new HashMap<String,ICarRentalCompany>(rentals);
 	}
 
 }

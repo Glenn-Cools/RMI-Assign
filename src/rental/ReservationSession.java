@@ -13,8 +13,6 @@ import java.util.logging.Logger;
 
 public class ReservationSession extends Session {
 
-	private static Logger logger = Logger.getLogger(ReservationSession.class.getName());
-	
 	public ReservationSession(String name) {
 		super(name);
 	}
@@ -23,16 +21,9 @@ public class ReservationSession extends Session {
 
 	public Quote createQuote(Date start, Date end, String carType, String region)
 			throws ReservationException, RemoteException {
-		logger.log(Level.INFO, "test");
 		ReservationConstraints constraints = new ReservationConstraints(start, end, carType, region);
-		logger.log(Level.INFO, "test2");
 		ArrayList<ICarRentalCompany> companyList = new ArrayList<ICarRentalCompany>(NamingService.getRentals().values());
 	
-		//for (String companyName : getAllRentalCompanies()) {
-			//logger.log(Level.INFO, companyName);
-			//companyList.add(NamingService.getRental(companyName));
-		//}
-		logger.log(Level.INFO, "test4");
 		ICarRentalCompany company = checkAvailableCarType(constraints, companyList);
 		if (company == null) {
 			throw new ReservationException("No available cars of that type");
