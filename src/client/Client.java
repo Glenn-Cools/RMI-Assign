@@ -28,8 +28,8 @@ public class Client extends AbstractTestManagement<ReservationSession,ManagerSes
 	public static void main(String[] args) throws Exception {
 		
 		Client client = new Client("trips");
-		// Get Hertz and Dockx preloaded
 		
+		// Get Hertz and Dockx preloaded
 		ManagerSession ms  = client.getNewManagerSession("admin", "Hertz");
 		client.registerCompany(ms);
 		client.endSession(ms);
