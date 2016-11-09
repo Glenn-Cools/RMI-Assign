@@ -99,6 +99,10 @@ public class CarRentalCompany implements ICarRentalCompany{
 		return new ArrayList<CarType>(carTypes.values());
 	}
 	
+	public Set<String> getAllCarTypeNames(){
+		return new HashSet<String>(carTypes.keySet());
+	}
+	
 	public CarType getCarType(String carTypeName) {
 		if(carTypes.containsKey(carTypeName))
 			return carTypes.get(carTypeName);

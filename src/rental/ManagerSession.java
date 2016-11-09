@@ -32,7 +32,7 @@ public class ManagerSession extends Session {
 		int out = 0;
 
 		for (ICarRentalCompany company : NamingService.getRentals().values()) {
-			if (company.getAllCarTypes().contains(company.getCarType(carType))) {
+			if (company.getAllCarTypeNames().contains(carType)) {
 				out += company.getReservationsByCarType(carType).size();
 			}
 		}
